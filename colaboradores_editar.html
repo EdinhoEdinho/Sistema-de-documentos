@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar Colaborador</h2>
+
+<section class="panel form-panel">
+  <form method="post" class="grid-3">
+    <div><label>Nome</label><input type="text" name="colnome" maxlength="45" required value="{{ colaborador.Colnome }}" /></div>
+    <div><label>Data nascimento</label><input type="date" name="coldtnasc" value="{{ colaborador.Coldtnasc or '' }}" /></div>
+    <div><label>Cadastro</label><input type="date" name="colcadastro" value="{{ colaborador.Colcadastro or '' }}" /></div>
+    <div>
+      <label>Empresa</label>
+      <select name="empresa_empid" required>
+        <option value="">Selecione</option>
+        {% for e in empresas %}
+        <option value="{{ e.Empid }}" {% if e.Empid == colaborador.Empresa_Empid %}selected{% endif %}>{{ e.Empnome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div><label>Rua</label><input type="text" name="endrua" maxlength="45" value="{{ colaborador.Endrua or '' }}" /></div>
+    <div><label>Numero</label><input type="text" name="endnumero" maxlength="45" value="{{ colaborador.Endnumero or '' }}" /></div>
+    <div><label>Bairro</label><input type="text" name="endbairro" maxlength="45" value="{{ colaborador.Endbairro or '' }}" /></div>
+    <div><label>Cidade</label><input type="text" name="endcidade" maxlength="45" value="{{ colaborador.Endcidade or '' }}" /></div>
+    <div><label>Estado</label><input type="text" name="endestado" maxlength="45" value="{{ colaborador.Endestado or '' }}" /></div>
+    <div><label>Pais</label><input type="text" name="endpais" maxlength="45" value="{{ colaborador.Endpais or '' }}" /></div>
+    <div><label>CEP</label><input type="text" name="endcep" maxlength="45" value="{{ colaborador.Endcep or '' }}" /></div>
+    <div class="actions-row">
+      <button class="btn-inline" type="submit">Salvar</button>
+      <a class="btn-link" href="{{ url_for('colaboradores') }}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

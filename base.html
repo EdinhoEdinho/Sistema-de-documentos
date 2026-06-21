@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ERP - CLIENT ENGENHARIA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <a class="brand" href="{{ url_for('dashboard') }}" aria-label="ERP Client Engenharia">
+          <img src="{{ url_for('static', filename='Client.png') }}" alt="Client Engenharia" />
+          <span>
+            <strong>ERP</strong>
+            <small>CLIENT ENGENHARIA</small>
+          </span>
+        </a>
+        {% if session.get('user_name') %}
+        <p class="user-badge">Logado: {{ session.get('user_name') }}</p>
+        {% endif %}
+        <nav>
+          <a href="{{ url_for('dashboard') }}">Dashboard</a>
+          <a href="{{ url_for('empresas') }}">Empresas</a>
+          <a href="{{ url_for('colaboradores') }}">Colaboradores</a>
+          <a href="{{ url_for('nrs') }}">NRS</a>
+          <a href="{{ url_for('aso') }}">ASO</a>
+          <a href="{{ url_for('documentos') }}">Documentos</a>
+          <a href="{{ url_for('alertas_config') }}">Alertas</a>
+          <a href="/logout">Sair</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-wrap" data-autodismiss="true">
+              {% for msg in messages %}
+                <div class="flash">{{ msg }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    <script>
+      (function () {
+        const wrap = document.querySelector("[data-autodismiss='true']");
+        if (!wrap) return;
+        setTimeout(() => {
+          wrap.classList.add("flash-hide");
+          setTimeout(() => wrap.remove(), 450);
+        }, 3000);
+      })();
+    </script>
+  </body>
+</html>

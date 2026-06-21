@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Colaboradores</h2>
+
+<section class="panel form-panel">
+  <form method="post" class="grid-3">
+    <div><label>Nome</label><input type="text" name="colnome" maxlength="45" required /></div>
+    <div><label>Data nascimento</label><input type="date" name="coldtnasc" /></div>
+    <div><label>Cadastro</label><input type="date" name="colcadastro" /></div>
+    <div>
+      <label>Empresa</label>
+      <select name="empresa_empid" required>
+        <option value="">Selecione</option>
+        {% for e in empresas %}
+        <option value="{{ e.Empid }}">{{ e.Empnome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div><label>Rua</label><input type="text" name="endrua" maxlength="45" /></div>
+    <div><label>Numero</label><input type="text" name="endnumero" maxlength="45" /></div>
+    <div><label>Bairro</label><input type="text" name="endbairro" maxlength="45" /></div>
+    <div><label>Cidade</label><input type="text" name="endcidade" maxlength="45" /></div>
+    <div><label>Estado</label><input type="text" name="endestado" maxlength="45" /></div>
+    <div><label>Pais</label><input type="text" name="endpais" maxlength="45" /></div>
+    <div><label>CEP</label><input type="text" name="endcep" maxlength="45" /></div>
+    <div><button type="submit">Cadastrar</button></div>
+  </form>
+</section>
+
+<section class="panel">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Nome</th><th>Nascimento</th><th>Cadastro</th><th>Empresa</th><th>Endereco</th><th>Acoes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in colaboradores %}
+      <tr>
+        <td>{{ c.Colid }}</td>
+        <td>{{ c.Colnome }}</td>
+        <td>{{ c.Coldtnasc }}</td>
+        <td>{{ c.Colcadastro }}</td>
+        <td>{{ c.Empnome }}</td>
+        <td>
+          {{ c.Endrua or '' }} {{ c.Endnumero or '' }} - {{ c.Endbairro or '' }},
+          {{ c.Endcidade or '' }}/{{ c.Endestado or '' }} {{ c.Endcep or '' }}
+        </td>
+        <td class="actions">
+          <a class="btn-link" href="{{ url_for('colaboradores_editar', colid=c.Colid) }}">Editar</a>
+          <form method="post" action="{{ url_for('colaboradores_excluir', colid=c.Colid) }}" onsubmit="return confirm('Excluir colaborador?');">
+            <button class="btn-danger btn-inline" type="submit">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7">Nenhum colaborador cadastrado.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

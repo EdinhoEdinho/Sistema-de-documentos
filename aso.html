@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>ASO</h2>
+
+<section class="panel form-panel">
+  <form method="post" class="grid-3">
+    <div><label>Data (vencimento)</label><input type="date" name="asodata" /></div>
+    <div><label>Avisar com quantos dias</label><input type="number" name="asoalertadias" min="0" max="3650" value="30" required /></div>
+    <div>
+      <label>Colaborador</label>
+      <select name="colaborador_colid" required>
+        <option value="">Selecione</option>
+        {% for c in colaboradores %}
+        <option value="{{ c.Colid }}">{{ c.Colnome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-submit">
+      <label class="ghost-label">Acao</label>
+      <button class="btn-inline" type="submit">Cadastrar</button>
+    </div>
+  </form>
+</section>
+
+<section class="panel">
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Data</th><th>Aviso</th><th>Colaborador</th><th>Acoes</th></tr>
+    </thead>
+    <tbody>
+      {% for a in asos %}
+      <tr>
+        <td>{{ a.Asoid }}</td>
+        <td>{{ a.Asodata }}</td>
+        <td>{{ a.Asoalertadias }} dias antes</td>
+        <td>{{ a.Colnome }}</td>
+        <td class="actions">
+          <a class="btn-link" href="{{ url_for('aso_editar', asoid=a.Asoid) }}">Editar</a>
+          <form method="post" action="{{ url_for('aso_excluir', asoid=a.Asoid) }}" onsubmit="return confirm('Excluir ASO?');">
+            <button class="btn-danger btn-inline" type="submit">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5">Nenhum ASO cadastrado.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

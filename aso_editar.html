@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar ASO</h2>
+
+<section class="panel form-panel">
+  <form method="post" class="grid-3">
+    <div><label>Data (vencimento)</label><input type="date" name="asodata" value="{{ aso_item.Asodata or '' }}" /></div>
+    <div><label>Avisar com quantos dias</label><input type="number" name="asoalertadias" min="0" max="3650" required value="{{ aso_item.Asoalertadias or 30 }}" /></div>
+    <div>
+      <label>Colaborador</label>
+      <select name="colaborador_colid" required>
+        <option value="">Selecione</option>
+        {% for c in colaboradores %}
+        <option value="{{ c.Colid }}" {% if c.Colid == aso_item.Colaborador_Colid %}selected{% endif %}>{{ c.Colnome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="actions-row">
+      <button class="btn-inline" type="submit">Salvar</button>
+      <a class="btn-link" href="{{ url_for('aso') }}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Alertas de Vencimentos</h2>
+<p class="hint">Registros dentro do prazo de aviso configurado em cada NR, ASO ou documento (hoje: {{ hoje }})</p>
+
+<section class="cards">
+  <article class="card">
+    <h3>Empresas</h3>
+    <strong>{{ empresas_count }}</strong>
+  </article>
+  <article class="card">
+    <h3>Colaboradores</h3>
+    <strong>{{ colaboradores_count }}</strong>
+  </article>
+  <article class="card">
+    <h3>Documentos</h3>
+    <strong>{{ documentos_count }}</strong>
+  </article>
+</section>
+
+<section class="panel">
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Codigo</th>
+        <th>Colaborador</th>
+        <th>Empresa</th>
+        <th>Vencimento</th>
+        <th>Aviso</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in alertas %}
+      <tr class="{% if item.StatusAlerta == 'VENCIDO' %}row-overdue{% elif item.StatusAlerta == 'VENCE_HOJE' %}row-due-today{% endif %}">
+        <td>{{ item.Tipo }}</td>
+        <td>{{ item.Codigo }}</td>
+        <td>{{ item.Colnome }}</td>
+        <td>{{ item.Empnome }}</td>
+        <td>{{ item.Vencimento }}</td>
+        <td>{{ item.AvisarDias }} dias antes</td>
+        <td>
+          {% if item.StatusAlerta == 'VENCIDO' %}
+            <span class="status-badge status-overdue">Vencido ha {{ item.DiasRestantes|abs }} dia(s)</span>
+          {% elif item.StatusAlerta == 'VENCE_HOJE' %}
+            <span class="status-badge status-today">Vence hoje</span>
+          {% elif item.DiasRestantes == 0 %}
+            <span class="status-badge status-today">Vence hoje</span>
+          {% else %}
+            <span class="status-badge status-soon">Vence em {{ item.DiasRestantes }} dia(s)</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7">Sem alertas conforme os prazos configurados.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% if alertas %}
+<aside class="alert-panel" data-alert-panel>
+  <div class="alert-modal-head">
+    <div>
+      <h2 id="alert-modal-title">Alertas de vencimento</h2>
+      <p class="hint">{{ alertas|length }} registro(s) precisam de atencao e serao exibidos em ordem de vencimento.</p>
+    </div>
+    <button class="modal-close" type="button" data-close-alert aria-label="Fechar alerta">x</button>
+  </div>
+  <div class="alert-list">
+    {% for item in alertas %}
+    <article class="alert-item">
+      <strong>{{ item.Tipo }} - {{ item.Codigo }}</strong>
+      <span>{{ item.Empnome }}{% if item.Colnome != '-' %} / {{ item.Colnome }}{% endif %}</span>
+      <span>
+        Vencimento: {{ item.Vencimento }}.
+        {% if item.StatusAlerta == 'VENCIDO' %}
+          Vencido ha {{ item.DiasRestantes|abs }} dia(s).
+        {% elif item.StatusAlerta == 'VENCE_HOJE' %}
+          Vence hoje.
+        {% else %}
+          Vence em {{ item.DiasRestantes }} dia(s).
+        {% endif %}
+      </span>
+    </article>
+    {% endfor %}
+  </div>
+</aside>
+
+<script>
+  (function () {
+    const panel = document.querySelector("[data-alert-panel]");
+    if (!panel) return;
+    panel.querySelectorAll("[data-close-alert]").forEach((button) => {
+      button.addEventListener("click", () => panel.remove());
+    });
+  })();
+</script>
+{% endif %}
+{% endblock %}

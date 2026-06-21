@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Configuracao de Alertas</h2>
+<p class="hint">Defina com quantos dias de antecedencia cada registro deve aparecer no alerta de vencimento.</p>
+
+<form method="post">
+  <section class="panel">
+    <h3 class="section-title">NRS</h3>
+    <table>
+      <thead>
+        <tr><th>NR</th><th>Vencimento</th><th>Colaborador</th><th>Empresa</th><th>Avisar com</th></tr>
+      </thead>
+      <tbody>
+        {% for n in nrs %}
+        <tr>
+          <td>{{ n.Nrsnumero }}</td>
+          <td>{{ n.Nrsdata }}</td>
+          <td>{{ n.Colnome }}</td>
+          <td>{{ n.Empnome }}</td>
+          <td><input class="table-input" type="number" name="nr_{{ n.Nrsid }}" min="0" max="3650" required value="{{ n.Nrsalertadias or 30 }}" /> dias</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">Nenhuma NR cadastrada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h3 class="section-title">ASO</h3>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Vencimento</th><th>Colaborador</th><th>Empresa</th><th>Avisar com</th></tr>
+      </thead>
+      <tbody>
+        {% for a in asos %}
+        <tr>
+          <td>{{ a.Asoid }}</td>
+          <td>{{ a.Asodata }}</td>
+          <td>{{ a.Colnome }}</td>
+          <td>{{ a.Empnome }}</td>
+          <td><input class="table-input" type="number" name="aso_{{ a.Asoid }}" min="0" max="3650" required value="{{ a.Asoalertadias or 30 }}" /> dias</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">Nenhum ASO cadastrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h3 class="section-title">Documentos</h3>
+    <table>
+      <thead>
+        <tr><th>Documento</th><th>Vencimento</th><th>Empresa</th><th>Avisar com</th></tr>
+      </thead>
+      <tbody>
+        {% for d in documentos %}
+        <tr>
+          <td>{{ d.Docnome }}</td>
+          <td>{{ d.Docdt }}</td>
+          <td>{{ d.Empnome }}</td>
+          <td><input class="table-input" type="number" name="doc_{{ d.Docid }}" min="0" max="3650" required value="{{ d.Docalertadias or 30 }}" /> dias</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">Nenhum documento cadastrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <button class="btn-inline" type="submit">Salvar alertas</button>
+</form>
+{% endblock %}

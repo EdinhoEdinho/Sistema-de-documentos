@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - ERP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body class="login-page">
+    <main class="login-shell">
+      <section class="login-card">
+        <div class="login-brand">
+          <img src="{{ url_for('static', filename='Client.png') }}" alt="Client Engenharia" />
+          <div>
+            <h1>ERP</h1>
+            <p>CLIENT ENGENHARIA</p>
+          </div>
+        </div>
+        <p class="hint">Acesso ao sistema</p>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-wrap">
+              {% for msg in messages %}
+                <div class="flash">{{ msg }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post" class="login-form">
+          <div>
+            <label>Usuario</label>
+            <input type="text" name="usuario" autocomplete="username" required />
+          </div>
+          <div>
+            <label>Senha</label>
+            <input type="password" name="senha" autocomplete="current-password" required />
+          </div>
+          <button type="submit">Entrar</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

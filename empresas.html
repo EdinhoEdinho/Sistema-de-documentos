@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Empresas</h2>
+
+<section class="panel form-panel">
+  <form method="post">
+    <label>Nome da empresa</label>
+    <input type="text" name="empnome" maxlength="45" required />
+    <button class="btn-inline" type="submit">Cadastrar</button>
+  </form>
+</section>
+
+<section class="panel">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Acoes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in empresas %}
+      <tr>
+        <td>{{ e.Empid }}</td>
+        <td>{{ e.Empnome }}</td>
+        <td class="actions">
+          <a class="btn-link" href="{{ url_for('empresas_editar', empid=e.Empid) }}">Editar</a>
+          <form method="post" action="{{ url_for('empresas_excluir', empid=e.Empid) }}" onsubmit="return confirm('Excluir empresa?');">
+            <button class="btn-danger btn-inline" type="submit">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3">Nenhuma empresa cadastrada.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

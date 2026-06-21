@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Documentos</h2>
+
+<section class="panel form-panel">
+  <form method="post" class="grid-3">
+    <div><label>Nome documento</label><input type="text" name="docnome" maxlength="45" required /></div>
+    <div><label>Data vencimento</label><input type="date" name="docdt" /></div>
+    <div><label>Avisar com quantos dias</label><input type="number" name="docalertadias" min="0" max="3650" value="30" required /></div>
+    <div>
+      <label>Empresa</label>
+      <select name="empresa_empid" required>
+        <option value="">Selecione</option>
+        {% for e in empresas %}
+        <option value="{{ e.Empid }}">{{ e.Empnome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div><button type="submit">Cadastrar</button></div>
+  </form>
+</section>
+
+<section class="panel">
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Nome</th><th>Vencimento</th><th>Aviso</th><th>Empresa</th><th>Acoes</th></tr>
+    </thead>
+    <tbody>
+      {% for d in documentos %}
+      <tr>
+        <td>{{ d.Docid }}</td>
+        <td>{{ d.Docnome }}</td>
+        <td>{{ d.Docdt }}</td>
+        <td>{{ d.Docalertadias }} dias antes</td>
+        <td>{{ d.Empnome }}</td>
+        <td class="actions">
+          <a class="btn-link" href="{{ url_for('documentos_editar', docid=d.Docid) }}">Editar</a>
+          <form method="post" action="{{ url_for('documentos_excluir', docid=d.Docid) }}" onsubmit="return confirm('Excluir documento?');">
+            <button class="btn-danger btn-inline" type="submit">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6">Nenhum documento cadastrado.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

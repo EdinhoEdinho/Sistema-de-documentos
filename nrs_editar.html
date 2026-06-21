@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar NR</h2>
+
+<section class="panel form-panel">
+  <form method="post" class="grid-3">
+    <div><label>Numero NR</label><input type="text" name="nrsnumero" maxlength="45" required value="{{ nr.Nrsnumero }}" /></div>
+    <div><label>Data (vencimento)</label><input type="date" name="nrsdata" value="{{ nr.Nrsdata or '' }}" /></div>
+    <div><label>Avisar com quantos dias</label><input type="number" name="nrsalertadias" min="0" max="3650" required value="{{ nr.Nrsalertadias or 30 }}" /></div>
+    <div>
+      <label>Colaborador</label>
+      <select name="colaborador_colid" required>
+        <option value="">Selecione</option>
+        {% for c in colaboradores %}
+        <option value="{{ c.Colid }}" {% if c.Colid == nr.Colaborador_Colid %}selected{% endif %}>{{ c.Colnome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="actions-row">
+      <button class="btn-inline" type="submit">Salvar</button>
+      <a class="btn-link" href="{{ url_for('nrs') }}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}
